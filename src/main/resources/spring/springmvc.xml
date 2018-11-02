@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+
+	<context:component-scan base-package="com.syaccp.easybuy.controller"></context:component-scan>
+
+
+	<!-- 对静态资源放行 -->
+
+
+	<!-- default-servlet-handler 将在 SpringMVC 上下文中定义一个 DefaultServletHttpRequestHandler, 
+		它会对进入 DispatcherServlet 的请求进行筛查, 如果发现是没有经过映射的请求, 就将该请求交由 WEB 应用服务器默认的 Servlet 
+		处理. 如果不是静态资源的请求，才由 DispatcherServlet 继续处理 一般 WEB 应用服务器默认的 Servlet 的名称都是 default. 
+		若所使用的 WEB 服务器的默认 Servlet 名称不是 default，则需要通过 default-servlet-name 属性显式指定 -->
+
+	<mvc:annotation-driven>
+
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<mvc:default-servlet-handler />      <!-- 加上该注释之后，方法访问地址不能访问，加上mvc:annotation-driven -->
+
+
+
+	<!-- 定义试图解析器 -->
+	<!-- Example: prefix="/WEB-INF/manage/", suffix=".jsp" -> "/WEB-INF/jsp/test.jsp" -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/manage/"></property>
+		<property name="suffix" value=".jsp"></property>
+
+	</bean>
+
+
+
+<!-- 配置文件上载的工具类 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	   <property name="maxUploadSize" value="5242880"></property>
+	   <property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+
+
+
+
+
+
+</beans>
